@@ -1,4 +1,4 @@
-# weatherly
+# instadoc
 
 The app that diagnoses your symptoms in a snap, and learns from your feedback.
 
