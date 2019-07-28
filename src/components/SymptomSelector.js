@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { MarginContainer, Flex } from '../../styles/Box'
 import symptoms from '../../data/symptoms'
@@ -30,9 +30,14 @@ export default function SymptomSelector (props) {
       <StyledSelect
         name='symptom'
         onChange={props.handleSelectChange}>
-        <StyledOption>Select a symptom</StyledOption>
+        <StyledOption selected={!props.symptom}>
+          Select a symptom
+        </StyledOption>
         {symptoms.map(symptom => (
-          <StyledOption key={symptom.name} value={symptom.name}>{symptom.name}</StyledOption>
+          <StyledOption
+            key={symptom.name}
+            value={symptom.name}>
+            {symptom.name}</StyledOption>
           ))}
       </StyledSelect>
       <MarginContainer  marginTop='30px'>
