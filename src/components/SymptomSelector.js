@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { MarginContainer } from '../../styles/Box'
-import { symptoms } from '../../data/symptomMap'
+import { MarginContainer, Flex } from '../../styles/Box'
+import symptoms from '../../data/symptoms'
+import { getDiagnoses } from '../api'
 
 const SelectComponent = MarginContainer.withComponent('select')
 
@@ -30,22 +31,36 @@ export default class SymptomSelector extends Component {
     }
 
     this.handleSymptomChange = this.handleSymptomChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleSymptomChange (e) {
     this.setState({ selectedSymptom: [e.target.value] })
   }
 
+  handleSubmit () {
+    this.props.handleSubmit(this.state.selectedSymptom)
+  }
+
   render () {
     return (
-      <MarginContainer marginTop='30px'>
+      <Flex
+        marginTop='30px'
+        flexDirection='column'
+        alignItems='center'>
         <StyledSelect onChange={this.handleSymptomChange}>
-          {!this.state.selectedSymptom && <StyledOption>Select a symptom</StyledOption>}
+          <StyledOption>Select a symptom</StyledOption>
           {symptoms.map(symptom => (
             <StyledOption key={symptom.name} value={symptom.name}>{symptom.name}</StyledOption>
             ))}
         </StyledSelect>
-      </MarginContainer>
+        <MarginContainer  marginTop='30px' alignSelf='flex-end'>
+          <button
+            type='submit' onClick={this.handleSubmit}>
+            Submit
+          </button>
+        </MarginContainer>
+      </Flex>
     )
   }
 }

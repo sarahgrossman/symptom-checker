@@ -3,6 +3,7 @@ const app = express()
 const morgan = require('morgan')
 const path = require('path')
 const bodyParser = require('body-parser')
+const routes = require('./routes');
 
 const port = process.env.PORT || 4000
 
@@ -12,6 +13,7 @@ app.use(express.static(path.join(__dirname, '../static')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.use('/api', routes)
 
 app.listen(port, () => {
   console.log('App listening on port 4000')
