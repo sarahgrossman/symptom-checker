@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MarginContainer, Flex } from '../../styles/Box'
 import symptoms from '../../data/symptoms'
-import { getDiagnoses } from '../api'
 
 const SelectComponent = MarginContainer.withComponent('select')
 
@@ -22,45 +21,26 @@ const StyledOption = styled.option`
   font-weight: normal;
 `
 
-export default class SymptomSelector extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      selectedSymptom: ''
-    }
-
-    this.handleSymptomChange = this.handleSymptomChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleSymptomChange (e) {
-    this.setState({ selectedSymptom: [e.target.value] })
-  }
-
-  handleSubmit () {
-    this.props.handleSubmit(this.state.selectedSymptom)
-  }
-
-  render () {
-    return (
-      <Flex
-        marginTop='30px'
-        flexDirection='column'
-        alignItems='center'>
-        <StyledSelect onChange={this.handleSymptomChange}>
-          <StyledOption>Select a symptom</StyledOption>
-          {symptoms.map(symptom => (
-            <StyledOption key={symptom.name} value={symptom.name}>{symptom.name}</StyledOption>
-            ))}
-        </StyledSelect>
-        <MarginContainer  marginTop='30px' alignSelf='flex-end'>
-          <button
-            type='submit' onClick={this.handleSubmit}>
-            Submit
-          </button>
-        </MarginContainer>
-      </Flex>
-    )
-  }
+export default function SymptomSelector (props) {
+  return (
+    <Flex
+      marginTop='30px'
+      flexDirection='column'
+      alignItems='center'>
+      <StyledSelect
+        name='symptom'
+        onChange={props.handleSelectChange}>
+        <StyledOption>Select a symptom</StyledOption>
+        {symptoms.map(symptom => (
+          <StyledOption key={symptom.name} value={symptom.name}>{symptom.name}</StyledOption>
+          ))}
+      </StyledSelect>
+      <MarginContainer  marginTop='30px'>
+        <button
+          type='submit' onClick={props.handleSubmit}>
+          Submit
+        </button>
+      </MarginContainer>
+    </Flex>
+  )
 }
