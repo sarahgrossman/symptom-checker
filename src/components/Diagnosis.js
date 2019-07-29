@@ -1,5 +1,12 @@
 import React from 'react'
-import { Flex } from '../../styles/Box'
+import styled from 'styled-components'
+import { Flex, MarginContainer, SectionContainer } from '../../styles/Box'
+import Button from '../../styles/Button'
+
+const DiagnosisText = styled.p`
+  margin-top: 0rem;
+  align-self: flex-start;
+`
 
 export default function Diagnosis (props) {
   const mostCommon = props.diagnoses.reduce((curr, acc) => {
@@ -7,24 +14,23 @@ export default function Diagnosis (props) {
   }, {})
 
   return (
-    <Flex flexDirection='column'>
-      <p>Your best match:</p>
-      <p>{mostCommon.name}</p>
-      <p>Does this seem right to you?</p>
-      <Flex>
-        <button
-          type='submit'
-          value='true'
-          onClick={props.handleDiagnosisFeedback}>
-          Yes
-        </button>
-        <button
-          type='submit'
-          value='false'
-          onClick={props.handleDiagnosisFeedback}>
-          No
-        </button>
+    <SectionContainer>
+      <h2>Your best match, based on our experience, is:</h2>
+      <DiagnosisText>
+        {mostCommon.name[0].toUpperCase() + mostCommon.name.slice(1)}
+      </DiagnosisText>
+      <Flex flexDirection='column' marginTop='30px'>
+        <DiagnosisText>Does this seem right to you?</DiagnosisText>
+        <Flex marginTop='-10px' justifyContent='flex-end'>
+          <Button type='submit' value='true' onClick={props.handleDiagnosisFeedback}>
+            Yes
+          </Button>
+          <MarginContainer marginLeft='20px' />
+          <Button type='submit' value='false' onClick={props.handleDiagnosisFeedback}>
+            No
+          </Button>
+        </Flex>
       </Flex>
-    </Flex>
+    </SectionContainer>
   )
 }

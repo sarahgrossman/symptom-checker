@@ -26,7 +26,7 @@ const FlexContainer = styled.div`
 `
 
 const Heading = styled.h1`
-  margin-top: 3rem;
+  margin-top: 30px;
   font-family: Helvetica, sans-serif;
   font-weight: normal;
 `
@@ -63,7 +63,11 @@ export default class App extends Component {
 
   handleDiagnosisSubmit (e) {
     API.setDiagnosis(this.state.symptom, this.state.userDiagnosis)
-      .then(() => this.setState({ feedbackComplete: true }))
+      .then(() => {
+        this.setState({ feedbackComplete: true }, () => {
+          location.hash = 'startOver'
+        })
+      })
       .catch(e => alert('An error occurred.'))
   }
 

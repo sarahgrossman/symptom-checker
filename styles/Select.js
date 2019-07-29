@@ -9,12 +9,18 @@ export const StyledSelect = styled(SelectComponent)`
   width: 400px;
   border-radius: 1px solid gray;
   background-color: white;
-  padding: 5px;
+  padding: 10px;
+  position: absolute;
+  font-family: Helvetica, sans-serif;
+  font-size: 21px;
 `
 
-export const StyledOption = styled.option`
-  height: 3rem;
-  font-size: 2.1px;
-  font-family: Helvetica, sans-serif;
-  font-weight: normal;
+const IconComponent = MarginContainer.withComponent('i')
+
+export const StyledIcon = styled(IconComponent)`
+  position: absolute;
+  z-index: 5;
+  right: 5px;
+  cursor: pointer;
+  pointer-events: none;
 `

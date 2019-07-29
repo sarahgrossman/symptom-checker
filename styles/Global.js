@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
   h5,
   h6 {
     font-family: Helvetica, sans-serif;
+    font-weight: normal;
   }
 
   p {
