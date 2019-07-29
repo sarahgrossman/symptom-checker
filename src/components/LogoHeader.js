@@ -11,9 +11,7 @@ const LogoContainer = styled(Flex)`
 
 export default function LogoHeader (props) {
   return (
-    <LogoContainer
-      justifyContent='flex-start'
-      margin='100px 0'>
+    <LogoContainer justifyContent='flex-start' margin='100px 0'>
       <img src={logo} />
     </LogoContainer>
   )

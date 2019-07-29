@@ -47,7 +47,9 @@ export default class App extends Component {
   handleSymptomSubmit () {
     API.getDiagnoses(this.state.symptom)
       .then(res => res.json())
-      .then(({ diagnoses }) => this.setState({ diagnoses }))
+      .then(({ diagnoses }) => this.setState({ diagnoses }, () => {
+        this.scrollToPosition('diagnosis')
+      }))
       .catch(e => alert('Please select a symptom'))
   }
 
@@ -56,23 +58,36 @@ export default class App extends Component {
   }
 
   handleDiagnosisFeedback (e) {
+    const diagnosisAccepted = e.target.value === true
     this.setState({
-      diagnosisAccepted: e.target.value === 'true', diagnosisSeen: true,
-      feedbackComplete: e.target.value === 'true' })
+      diagnosisAccepted,
+      diagnosisSeen: true,
+      feedbackComplete: diagnosisAccepted }, () => {
+        const hash = diagnosisAccepted ? 'start-over' : 'diagnosis-selector'
+        this.scrollToPosition(hash)
+      })
+
   }
 
   handleDiagnosisSubmit (e) {
+    if (this.state.feedbackComplete) return
+
     API.setDiagnosis(this.state.symptom, this.state.userDiagnosis)
       .then(() => {
         this.setState({ feedbackComplete: true }, () => {
-          location.hash = 'startOver'
+          this.scrollToPosition('start-over')
         })
       })
       .catch(e => alert('An error occurred.'))
   }
 
   startOver () {
-    this.setState(nullState)
+    this.setState(nullState, () => this.scrollToPosition('header'))
+  }
+
+  scrollToPosition (id) {
+    const position = document.getElementById(id).offsetTop
+    window.scrollTo(0, position)
   }
 
   render () {
@@ -87,7 +102,7 @@ export default class App extends Component {
     return (
       <React.Fragment>
         <GlobalStyle />
-        <FlexContainer>
+        <FlexContainer id='header'>
           <LogoHeader />
           <Heading>
             Thanks for stopping by.
@@ -102,7 +117,7 @@ export default class App extends Component {
           <Diagnosis
             diagnoses={diagnoses}
             handleDiagnosisFeedback={this.handleDiagnosisFeedback} />}
-          {diagnosisSeen &&    !diagnosisAccepted &&
+          {diagnosisSeen && !diagnosisAccepted &&
           <DiagnosisSelector
             handleSelectChange={this.handleSelectChange}
             handleSubmit={this.handleDiagnosisSubmit}

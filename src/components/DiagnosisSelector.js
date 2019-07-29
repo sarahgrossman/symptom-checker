@@ -7,7 +7,7 @@ import { StyledSelect, StyledIcon } from '../../styles/Select'
 
 export default function SymptomSelector (props) {
     return (
-      <SectionContainer>
+      <SectionContainer id='diagnosis-selector'>
         <h2>Which of the following seems like a better match?</h2>
         <MarginContainer marginBottom='30px' />
         <RelativeContainer width='100%'>

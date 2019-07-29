@@ -14,7 +14,7 @@ export default function Diagnosis (props) {
   }, {})
 
   return (
-    <SectionContainer>
+    <SectionContainer id='diagnosis'>
       <h2>Your best match, based on our experience, is:</h2>
       <DiagnosisText>
         {mostCommon.name[0].toUpperCase() + mostCommon.name.slice(1)}
