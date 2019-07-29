@@ -7,10 +7,12 @@ import Diagnosis from './components/Diagnosis'
 import DiagnosisSelector from './components/DiagnosisSelector'
 import StartOver from './components/StartOver'
 import * as API from './api'
+import { selectAppDiagnosis } from '../utils'
 
 const nullState = {
   symptom: '',
   diagnoses: [],
+  appDiagnosis: {},
   diagnosisSeen: false,
   diagnosisAccepted: false,
   userDiagnosis: '',
@@ -47,9 +49,11 @@ export default class App extends Component {
   handleSymptomSubmit () {
     API.getDiagnoses(this.state.symptom)
       .then(res => res.json())
-      .then(({ diagnoses }) => this.setState({ diagnoses }, () => {
-        this.scrollToPosition('diagnosis')
-      }))
+      .then(({ diagnoses }) => {
+        const appDiagnosis = selectAppDiagnosis(diagnoses)
+        this.setState({ diagnoses, appDiagnosis })
+      })
+      .then(() => this.scrollToPosition('diagnosis'))
       .catch(() => alert('Please select a symptom'))
   }
 
@@ -59,27 +63,41 @@ export default class App extends Component {
 
   handleDiagnosisFeedback (e) {
     const diagnosisAccepted = e.target.value === 'true'
+    if (diagnosisAccepted) {
+      this.handleDiagnosisSubmit(null, true)
+    }
     this.setState({
       diagnosisAccepted,
       diagnosisSeen: true,
       feedbackComplete: diagnosisAccepted
     }, () => {
-        const hash = diagnosisAccepted ? 'start-over' : 'diagnosis-selector'
-        this.scrollToPosition(hash)
-      })
+      const hash = diagnosisAccepted ? 'start-over' : 'diagnosis-selector'
+      this.scrollToPosition(hash)
+    })
   }
 
-  handleDiagnosisSubmit () {
+  handleDiagnosisSubmit (e, useAppDiagnosis = false) {
     if (this.state.feedbackComplete) return
-    if (!this.state.userDiagnosis) return alert('Please select a diagnosis.')
 
-    API.setDiagnosis(this.state.symptom, this.state.userDiagnosis)
+    const diagnosis = useAppDiagnosis
+      ? this.state.appDiagnosis.name
+      : this.state.userDiagnosis
+
+    API.setDiagnosis(this.state.symptom, diagnosis)
       .then(() => {
         this.setState({ feedbackComplete: true }, () => {
           this.scrollToPosition('start-over')
         })
       })
       .catch(e => alert('An error occurred.'))
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (!prevState.feedbackComplete && this.state.feedbackComplete) {
+      return API.getDiagnoses(this.state.symptom)
+      .then(res => res.json())
+      .then(({ diagnoses }) => this.setState({ diagnoses }))
+    }
   }
 
   startOver () {
@@ -95,10 +113,12 @@ export default class App extends Component {
     const {
       symptom,
       diagnoses,
+      appDiagnosis,
       diagnosisSeen,
       diagnosisAccepted,
       feedbackComplete
     } = this.state
+
 
     return (
       <React.Fragment>
@@ -116,7 +136,7 @@ export default class App extends Component {
             handleSubmit={this.handleSymptomSubmit} />
           {!!diagnoses.length &&
           <Diagnosis
-            diagnoses={diagnoses}
+            diagnosis={appDiagnosis}
             handleDiagnosisFeedback={this.handleDiagnosisFeedback} />}
           {diagnosisSeen && !diagnosisAccepted &&
           <DiagnosisSelector
@@ -124,7 +144,7 @@ export default class App extends Component {
             handleSubmit={this.handleDiagnosisSubmit}
             diagnoses={diagnoses} />}
           {feedbackComplete &&
-          <StartOver startOver={this.startOver} />}
+          <StartOver startOver={this.startOver} diagnoses={diagnoses} />}
         </FlexContainer>
       </React.Fragment>
     )

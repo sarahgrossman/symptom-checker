@@ -9,15 +9,11 @@ const DiagnosisText = styled.p`
 `
 
 export default function Diagnosis (props) {
-  const mostCommon = props.diagnoses.reduce((curr, acc) => {
-    return curr.frequency > acc.frequency ? curr : acc
-  }, {})
-
   return (
     <SectionContainer id='diagnosis'>
       <h2>Your best match, based on our experience, is:</h2>
       <DiagnosisText>
-        {mostCommon.name[0].toUpperCase() + mostCommon.name.slice(1)}
+        {props.diagnosis.name[0].toUpperCase() + props.diagnosis.name.slice(1)}
       </DiagnosisText>
       <Flex flexDirection='column' marginTop='30px'>
         <DiagnosisText>Does this seem right to you?</DiagnosisText>
