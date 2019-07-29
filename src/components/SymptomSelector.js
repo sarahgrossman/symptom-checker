@@ -8,8 +8,11 @@ export default function SymptomSelector (props) {
   return (
     <SectionContainer>
       <RelativeContainer width='400px'>
-      <StyledSelect name='symptom' onChange={props.handleSelectChange}>
-        <option selected={!props.symptom}>
+      <StyledSelect
+        value={props.symptom}
+        name='symptom'
+        onChange={props.handleSelectChange}>
+        <option value=''>
           Select a symptom
         </option>
         {symptoms.map(symptom => (

@@ -13,7 +13,7 @@ const nullState = {
   diagnoses: [],
   diagnosisSeen: false,
   diagnosisAccepted: false,
-  userDiagnosis: {},
+  userDiagnosis: '',
   feedbackComplete: false
 }
 
@@ -50,7 +50,7 @@ export default class App extends Component {
       .then(({ diagnoses }) => this.setState({ diagnoses }, () => {
         this.scrollToPosition('diagnosis')
       }))
-      .catch(e => alert('Please select a symptom'))
+      .catch(() => alert('Please select a symptom'))
   }
 
   handleSelectChange (e) {
@@ -58,19 +58,20 @@ export default class App extends Component {
   }
 
   handleDiagnosisFeedback (e) {
-    const diagnosisAccepted = e.target.value === true
+    const diagnosisAccepted = e.target.value === 'true'
     this.setState({
       diagnosisAccepted,
       diagnosisSeen: true,
-      feedbackComplete: diagnosisAccepted }, () => {
+      feedbackComplete: diagnosisAccepted
+    }, () => {
         const hash = diagnosisAccepted ? 'start-over' : 'diagnosis-selector'
         this.scrollToPosition(hash)
       })
-
   }
 
-  handleDiagnosisSubmit (e) {
+  handleDiagnosisSubmit () {
     if (this.state.feedbackComplete) return
+    if (!this.state.userDiagnosis) return alert('Please select a diagnosis.')
 
     API.setDiagnosis(this.state.symptom, this.state.userDiagnosis)
       .then(() => {
