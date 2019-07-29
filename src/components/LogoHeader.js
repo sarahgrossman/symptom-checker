@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex } from '../../styles/Box'
 import styled from 'styled-components'
+import logo from '../../static/images/instadoc-logo.png'
 
 const LogoContainer = styled(Flex)`
   padding-left: 10%;
@@ -13,7 +14,7 @@ export default function LogoHeader (props) {
     <LogoContainer
       justifyContent='flex-start'
       margin='100px 0'>
-      instadoc
+      <img src={logo} />
     </LogoContainer>
   )
 }

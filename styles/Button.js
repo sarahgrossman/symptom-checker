@@ -14,7 +14,7 @@ const Button = styled.button`
   min-width: 100px;
   padding: 10px 30px;
   margin: 30px 0;
-  background-color: #196cff;
+  background-color: #61BDE5;
   color: white;
 `
 
