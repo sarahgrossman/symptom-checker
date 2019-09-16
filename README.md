@@ -8,10 +8,10 @@ Simply `npm install` and `npm run dev` to get the project running. Navigate to `
 
 ## API
 
-All the routes for the Express API are in server/routes. At present there are two being used by the frontend:
+All the routes for the Express API are in `server/routes`. At present there are two being used by the frontend:
 
-1. GET /api/diagnoses/:symptom - get all the diagnoses (human-readable names and frequency)
-2. POST /api/diagnoses/:symptom - sends the diagnosis the user prefers from the frontend. Requires body that is an object with key "diagnosis" and value being the string name of the preferred diagnosis. Frequency for that diagnosis is incremented in the JavaScript object model.
+1. GET /api/diagnoses/:symptom - get all the diagnoses for a given symptom
+2. POST /api/diagnoses/:symptom - set the diagnosis the user prefers for a given symptom. Requires body that is an object with key "diagnosis" and value that is the preferred diagnosis (string). Frequency for that diagnosis is incremented in the JavaScript object model.
 
 Both routes accept and return JSON.
 

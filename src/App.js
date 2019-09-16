@@ -92,14 +92,6 @@ export default class App extends Component {
       .catch(e => alert('An error occurred.'))
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (!prevState.feedbackComplete && this.state.feedbackComplete) {
-      return API.getDiagnoses(this.state.symptom)
-      .then(res => res.json())
-      .then(({ diagnoses }) => this.setState({ diagnoses }))
-    }
-  }
-
   startOver () {
     this.setState(nullState, () => this.scrollToPosition('header'))
   }

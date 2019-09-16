@@ -2,6 +2,22 @@ import React from 'react'
 import { Flex, SectionContainer } from '../../styles/Box'
 import Button from '../../styles/Button'
 
+function DiagnosisFrequency (props) {
+  const { diagnosis, total } = props
+
+  let frequency = diagnosis.frequency
+    ? ((diagnosis.frequency) / total * 100).toFixed(2)
+    : 0
+
+  return (
+    <div>
+      <p>{diagnosis.name[0].toUpperCase() + diagnosis.name.slice(1)}:
+        <span> {frequency}%</span>
+      </p>
+    </div>
+  )
+}
+
 export default function StartOver (props) {
   const totalResponses = props.diagnoses.reduce((acc, curr) => {
     acc += curr.frequency
@@ -18,10 +34,11 @@ export default function StartOver (props) {
         {props.diagnoses
           .sort((curr, next) => next.frequency - curr.frequency)
           .map(diagnosis => (
-          <div key={diagnosis.name}>
-            <p>{diagnosis.name[0].toUpperCase() + diagnosis.name.slice(1)}: <span>{(diagnosis.frequency / totalResponses).toFixed(4) * 100}%</span></p>
-          </div>
-        ))}
+            <DiagnosisFrequency
+              key={diagnosis.name}
+              diagnosis={diagnosis}
+              total={totalResponses} />
+            ))}
       </Flex>
       <Flex justifyContent='flex-end' marginTop='-20px'>
         <Button type='reset' onClick={props.startOver}>Start over</Button>
